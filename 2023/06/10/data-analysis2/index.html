@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>用python进行数据分析——实战篇 - SnowWhite&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="SnowWhite"><meta name="msapplication-TileImage" content="img/logo.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SnowWhite"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="上一节我们学习了python进行数据分析的基础，这节我们通过分析真实股票数据来进一步理解和学习。 一.导入需要的库 12345import tushare as tsimport pandas as pdfrom pandas import DataFrame, Seriesimport numpy as npimport matplotlib.pyplot as plt"><meta property="og:type" content="blog"><meta property="og:title" content="SnowWhite"><meta property="og:url" content="https://github.com/SnowWhite5"><meta property="og:site_name" content="SnowWhite"><meta property="og:description" content="上一节我们学习了python进行数据分析的基础，这节我们通过分析真实股票数据来进一步理解和学习。 一.导入需要的库 12345import tushare as tsimport pandas as pdfrom pandas import DataFrame, Seriesimport numpy as npimport matplotlib.pyplot as plt"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://github.com/img/logo.png"><meta property="article:published_time" content="2023-06-10T05:48:18.000Z"><meta property="article:modified_time" content="2024-03-05T06:31:26.491Z"><meta property="article:author" content="SnowWhite"><meta property="article:tag" content="数据分析"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://github.com/img/logo.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://snowwhite5.github.io/2023/06/10/data-analysis2/"},"headline":"用python进行数据分析——实战篇","image":["https://snowwhite5.github.io/2023/06/10/data-analysis2/image-20240305135840161.png","https://snowwhite5.github.io/2023/06/10/data-analysis2/image-20240305135932184.png","https://snowwhite5.github.io/2023/06/10/data-analysis2/image-20240305140555303.png","https://snowwhite5.github.io/2023/06/10/data-analysis2/image-20240305140740138.png","https://snowwhite5.github.io/2023/06/10/data-analysis2/image-20240305141956936.png"],"datePublished":"2023-06-10T05:48:18.000Z","dateModified":"2024-03-05T06:31:26.491Z","author":{"@type":"Person","name":"SnowWhite"},"publisher":{"@type":"Organization","name":"SnowWhite's blog","logo":{"@type":"ImageObject","url":"https://snowwhite5.github.io/2023/06/10/data-analysis2/img/logo.png"}},"description":"上一节我们学习了python进行数据分析的基础，这节我们通过分析真实股票数据来进一步理解和学习。\r 一.导入需要的库\r 12345import tushare as tsimport pandas as pdfrom pandas import DataFrame, Seriesimport numpy as npimport matplotlib.pyplot as plt"}</script><link rel="canonical" href="https://snowwhite5.github.io/2023/06/10/data-analysis2/"><link rel="alternate" href="/atom.xml" title="SnowWhite&#039;s blog" type="application/atom+xml"><link rel="icon" href="/img/logo.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="SnowWhite&#039;s blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-9-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-06-10T05:48:18.000Z" title="2023/6/10 13:48:18">2023-06-10</time>发表</span><span class="level-item">15 分钟读完 (大约2294个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile"> 用python进行数据分析——实战篇</h1><div class="copyright article-block type-2"><p>版权申明：本文为原创文章，转载请注明原文出处</p><p>原文链接：<a href="https://snowwhite5.github.io/2023/06/10/data-analysis2/" target="_blank">https://snowwhite5.github.io/2023/06/10/data-analysis2/</a></p></div><div class="content"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>上一节我们学习了python进行数据分析的基础，这节我们通过分析真实股票数据来进一步理解和学习。</p>
+<h2 id="一.导入需要的库">一.导入需要的库</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame, Series</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<ul>
+<li>Tushare是一个免费、开源的python财经数据接口包。主要实现对股票等金融数据从数据采集、清洗加工
+到
+数据存储的过程，能够为金融分析人员提供快速、整洁、和多样的便于分析的数据，为他们在数据获取方面极大地减轻工作量，使他们更加专注于策略和模型的研究与实现上。考虑到Python
+pandas包在金融量化分析中体现出的优势，Tushare返回的绝大部分的数据格式都是pandas
+DataFrame类型，非常便于用pandas/NumPy/Matplotlib进行数据分析和可视化。</li>
+<li>Pandas、numpy是数据分析常用的，对表格、矩阵等数据进行处理的库，上一节已介绍过。</li>
+<li>Matplotlib 是一个用于绘制图表和可视化数据的
+Python库。它提供了丰富的绘图工具，可以用于生成各种静态、交互式和动画图表。Matplotlib
+是数据科学、机器学习和科学计算领域中最流行的绘图库之一。</li>
+</ul>
+<h2 id="二.数据获取及预处理">二.数据获取及预处理</h2>
+<h3
+id="使用tushare包获取某支股票的历史行情数据">1.使用tushare包获取某支股票的历史行情数据</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取某支股票的历史行情数据</span></span><br><span class="line">df = ts.get_hist_data(code= <span class="string">&#x27;600519&#x27;</span>, start= <span class="string">&#x27;2021-01-01&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>利用get_hist_data函数获取数据，主要参数有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">code，证券代码</span><br><span class="line">start，开始日期</span><br><span class="line">end,结束日期</span><br></pre></td></tr></table></figure>
+<p>返回为DataFrame格式，各参数的意义是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">date——日期</span><br><span class="line">open——开盘价</span><br><span class="line">high——最高价</span><br><span class="line">close——收盘价</span><br><span class="line">low——最低价</span><br><span class="line">volume——成交量</span><br><span class="line">price_change——价格变动</span><br><span class="line">p_change——涨跌幅</span><br><span class="line">ma5——5日均价</span><br><span class="line">ma10——10日均价</span><br><span class="line">ma20——20日均价</span><br><span class="line">v_ma5——5日均量</span><br><span class="line">v_ma10——10日均量</span><br><span class="line">v_ma20——20日均量</span><br><span class="line">turnover——换手率</span><br></pre></td></tr></table></figure>
+<h3 id="数据的存储于读取">2.数据的存储于读取</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.to_csv(<span class="string">&#x27;./data.csv&#x27;</span>) <span class="comment">#将数据存储为csv格式</span></span><br><span class="line">df=pd.read_csv(‘./data.csv’) <span class="comment">#将csv数据读入</span></span><br></pre></td></tr></table></figure>
+<p>to_csv是DataFrame类的方法，主要参数有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">path，文件输出路径</span><br><span class="line">sep，分隔符，默认为“,”;na_rep，缺失数据填充，默认是空字符串</span><br><span class="line">float_format，定义字符串格式</span><br><span class="line">columns，要输出到csv中的列</span><br><span class="line">header，是否保留列名，默认为保留</span><br><span class="line">index，设置索引（行名称），默认写入</span><br><span class="line">encodIng，编码格式，默认为“utf-8”。</span><br></pre></td></tr></table></figure>
+<p>由于原数据中，index是日期，所以存入后，被作为一列存入。</p>
+<img src="/2023/06/10/data-analysis2/image-20240305135840161.png" class="" title="image-20240305135840161">
+<h3 id="查看各列数据属性">3.查看各列数据属性</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.info()</span><br></pre></td></tr></table></figure>
+<img src="/2023/06/10/data-analysis2/image-20240305135932184.png" class="" title="image-20240305135932184">
+<p>返回参数有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RangeIndex——对象的行数</span><br><span class="line">column——每列的名称</span><br><span class="line">Non-Null Count——每列的非空值数量</span><br><span class="line">Dtype——每列的非空值数量</span><br><span class="line">memory usage——对象的内存使用情况</span><br></pre></td></tr></table></figure>
+<h3 id="将日期设为index">4.将日期设为index</h3>
+<p>为了之后针对日期的操作，日期对象需为datetime类型。可用pd.to_datetime进行转换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br></pre></td></tr></table></figure>
+<p>再将日期设为index。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.set_index(<span class="string">&#x27;date&#x27;</span>,inplace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>输入参数有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">key，需设置为索引的列名</span><br><span class="line">drop，删除用作索引的列，默认为True</span><br><span class="line">append，是否将该列附加到现有索引，默认为False</span><br><span class="line">inplace，是否将当前操作保存回原数据，默认为False</span><br></pre></td></tr></table></figure>
+<h2 id="三.数据分析">三.数据分析</h2>
+<h3
+id="输出该股票所有收盘比开盘上涨3以上的日期">1.输出该股票所有收盘比开盘上涨3%以上的日期</h3>
+<ul>
+<li>第一步：列出条件，收盘比开盘上涨3%以上</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(df[‘close’]-df[‘<span class="built_in">open</span>’])/df[‘<span class="built_in">open</span>’] &gt; <span class="number">0.03</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二步：获取所需数据。日期即索引</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[(df[‘close’]-df[‘<span class="built_in">open</span>’])/df[‘<span class="built_in">open</span>’] &gt; <span class="number">0.03</span>].index</span><br></pre></td></tr></table></figure>
+<img src="/2023/06/10/data-analysis2/image-20240305140555303.png" class="" title="image-20240305140555303">
+<h3
+id="输出该股票所有开盘比前日收益跌幅超过2的日期">2.输出该股票所有开盘比前日收益跌幅超过2%的日期</h3>
+<ul>
+<li>第一步：前日收益需用到shift方法。df.shift(n)
+，表示数值平移n个数。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[‘close’].shift(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二步：列出条件，开盘比前日收益跌幅超过2%</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(df[‘<span class="built_in">open</span>’] - df[‘close’].shift(<span class="number">1</span>))/df[‘close’].shift(<span class="number">1</span>) &lt;<span class="number">0.02</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第三步：获取所需数据。日期即索引</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[(df[<span class="string">&#x27;open&#x27;</span>] - df[<span class="string">&#x27;close&#x27;</span>].shift(<span class="number">1</span>))/df[<span class="string">&#x27;close&#x27;</span>].shift(<span class="number">1</span>) &lt; <span class="number">0.02</span>].index</span><br></pre></td></tr></table></figure>
+<img src="/2023/06/10/data-analysis2/image-20240305140740138.png" class="" title="image-20240305140740138">
+<h3
+id="假如我从2022年1月1日开始每月第一个交易日买入一手股票每年最后一个交易日卖出所有股票到今天为止收益如何">3.假如我从2022年1月1日开始，每月第一个交易日买入一手股票，每年最后一个交易日卖出所有股票，到今天为止，收益如何？</h3>
+<ul>
+<li><p>背景知识：一手股票指100支股票</p></li>
+<li><p>思考：</p>
+<ul>
+<li><p>时间节点：2022.1.1——2023.5.25</p></li>
+<li><p>买：一个完整的年需买入1200支</p></li>
+<li><p>卖：一个完整的年需卖出1200支</p></li>
+<li><p>买卖单价：假设用开盘价。</p></li>
+</ul></li>
+<li><p>第一步：按日期截取数据</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new_df = df[<span class="string">&#x27;2022-01-01&#x27;</span>:<span class="string">&#x27;2023-05-25&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二步：获取每个月的第一个交易日，需用resample方法进行按月重采样</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.monthly = new_df.resample(‘M’).first()</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<h4
+id="first和last分别返回重采样后每组的第一行和最后一行但index会显示异常">1.first和last分别返回重采样后每组的第一行和最后一行，但index会显示异常。</h4>
+<h4
+id="resample后可用group查看分组结果">2.resample后可用group查看分组结果</h4>
+<ul>
+<li>第三步：计算买入</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count = df.monthly[‘<span class="built_in">open</span>’].<span class="built_in">sum</span>()*<span class="number">100</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第四步：计算卖出</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#按年采样并取最后一行</span></span><br><span class="line">new_df.resample(‘A’).last()</span><br><span class="line"><span class="comment">#由于当年非年底，需切除最后一年</span></span><br><span class="line">df_yearly = new_df.resample(<span class="string">&#x27;A&#x27;</span>).last()[:-<span class="number">1</span>]</span><br><span class="line"><span class="comment">#计算卖出</span></span><br><span class="line">reav = df_yearly[<span class="string">&#x27;open&#x27;</span>].<span class="built_in">sum</span>()*<span class="number">1200</span></span><br><span class="line"><span class="comment">#最后一年手中剩余部分，按最后一天的收盘价进行计算</span></span><br><span class="line">last_money = <span class="number">100</span>*new_df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第五步：计算总收益</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last_money + reav - count</span><br></pre></td></tr></table></figure>
+<h2 id="四.双均线策略">四.双均线策略</h2>
+<h3 id="均线">1.均线</h3>
+<p>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线，移动平均线常用线有5天、10天、30天、60天、120天和240天的指标。计算方式为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MA=(C1+C2%+C3+...+CN)/N，Ci为第i天的收盘价</span><br></pre></td></tr></table></figure>
+<h3 id="计算5日均线和30日均线">2.计算5日均线和30日均线</h3>
+<p>用移动窗口rolling方法实现，输入参数为window，表示移动窗口大小。根据均线定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ma5  = df[‘close’].rolling(<span class="number">5</span>).mean()  <span class="comment">#5日均线</span></span><br><span class="line">ma30 = df[‘close’].rolling(<span class="number">30</span>).mean() <span class="comment">#30日均线</span></span><br></pre></td></tr></table></figure>
+<p>将其画出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(ma30)</span><br><span class="line">Plt.plot(ma5)</span><br></pre></td></tr></table></figure>
+<img src="/2023/06/10/data-analysis2/image-20240305141956936.png" class="" title="image-20240305141956936">
+<h3 id="金叉日期和死叉日期">3.金叉日期和死叉日期</h3>
+<ul>
+<li>分析指标中的两根指标线，一根为短时间内的指标线，一根为长时间内的指标线</li>
+<li>金叉指短期指标线向上穿过长期指标线，通常被视为股票价格的突破信号，表示短期内的趋势将转为上涨。</li>
+<li>死叉则为短期指标线向下穿过长期指标线，通常被视为股票价格的下跌信号，表示短期内的趋势将转为下跌。</li>
+</ul>
+<h3 id="分析找出金叉日期和死叉日期">4.分析找出金叉日期和死叉日期</h3>
+<p>根据定义，金叉左边为短期均线值小于长期均线值，右边为短期均线值大于长期均线值。死叉左边为短期均线值大于长期均线值，右边为短期均线值小于长期均线值。</p>
+<p>定义s1为ma5 小于ma30，s2 为ma5
+大于ma30，则对于s1，从True变为False变为的点为金叉，从False变为True的点为死叉。而s2刚好相反。</p>
+<p>假设：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s1:               T T F F T</span><br><span class="line">s2:               F F T T F</span><br><span class="line">s2向右平移1位后得到s22:</span><br><span class="line">s22:                F F T T F</span><br><span class="line">s1,s22与后：       F F F T   得到死叉</span><br><span class="line">s1,s22或后：       T F T T   得到金叉</span><br></pre></td></tr></table></figure>
+<p>翻译为代码为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s1 = ma5 &lt; ma30</span><br><span class="line">s2 = ma5 &gt; ma30</span><br><span class="line">death_ex = s1 &amp; (s2.shift(<span class="number">1</span>))</span><br><span class="line">death_date = df.loc[death_ex].index</span><br><span class="line">golden_ex = -(s1 | (s2.shift(<span class="number">1</span>)))</span><br><span class="line">golden_date = df.loc[golden_ex].index</span><br></pre></td></tr></table></figure>
+<h3
+id="如果初始资金为100000元金叉尽量买入死叉全部卖出到今天为止炒股收益率如何">5.如果初始资金为100000元，金叉尽量买入，死叉全部卖出，到今天为止，炒股收益率如何？</h3>
+<ul>
+<li>将金叉和死叉日期合并在同一个序列中</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s1 = Series(data = <span class="number">1</span>, index = golden_date)</span><br><span class="line">s2 = Series(data = <span class="number">0</span>, index = death_date)</span><br><span class="line">s = pd.concat(s1,s2)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>定义初始条件</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">first_money = <span class="number">100000</span></span><br><span class="line">money = first_money <span class="comment">#现有钱数</span></span><br><span class="line">hold = <span class="number">0</span> <span class="comment">#持有股数</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>用一个for循环计算金叉买入，死叉卖出</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(s)):</span><br><span class="line">    <span class="keyword">if</span> s[i] ==<span class="number">1</span>:  <span class="comment">#金叉</span></span><br><span class="line">        p = df.loc[s.index[i]][<span class="string">&#x27;open&#x27;</span>]</span><br><span class="line">        head_count = money // (p*<span class="number">100</span>)  <span class="comment">#尽量买入，即现有资金能买的股数</span></span><br><span class="line">        hold += head_count;</span><br><span class="line">        money -= hold * p;</span><br><span class="line">    <span class="keyword">else</span>:  <span class="comment">#死叉</span></span><br><span class="line">        p = df.loc[s.index[i]][<span class="string">&#x27;open&#x27;</span>]</span><br><span class="line">        money +=p *hold;</span><br><span class="line">        hold = <span class="number">0</span>;  <span class="comment">#全部卖出，剩0</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>假如s以金叉结束，则按最后一天的收盘价卖出全部，并计算收益</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">last_money = hold * df[<span class="string">&#x27;close&#x27;</span>][-<span class="number">1</span>]</span><br><span class="line">money + last_money -first_money</span><br></pre></td></tr></table></figure>
+</div><div class="article-licensing box"><div class="licensing-title"><p>用python进行数据分析——实战篇</p><p><a href="https://snowwhite5.github.io/2023/06/10/data-analysis2/">https://snowwhite5.github.io/2023/06/10/data-analysis2/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>SnowWhite</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-06-10</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-03-05</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></div><!--!--></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/img/alipay.JPG" alt="支付宝"></span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/img/wechat.JPG" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/07/15/data-analysis3/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">用MySQL ＆ Power BI 进行数据分析</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/05/13/data-analysis-1/"><span class="level-item">用python进行数据分析——基础篇</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><span class="level-item copyright article-title type-2">原创</span><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="content" id="valine-thread"></div><script src="//cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@1.4.16/dist/Valine.min.js"></script><script>new Valine({
+            el: '#valine-thread',
+            appId: "YC4mJ8MHaxOBVFTo1GRr5yDB-gzGzoHsz",
+            appKey: "M7OHMMjYi9awKK0BH7JdzICx",
+            placeholder: "欢迎探讨评论......",
+            avatar: "mm",
+            avatarForce: false,
+            meta: ["nick","mail","link"],
+            pageSize: 10,
+            lang: "zh-CN",
+            visitor: false,
+            highlight: true,
+            recordIP: false,
+            
+            
+            
+            enableQQ: false,
+            requiredFields: [],
+        });</script></div></div></div><div class="column column-left is-4-tablet is-3-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/logo.png" alt="SnowWhite"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">SnowWhite</p><p class="is-size-6 is-block">preparing for opportunities</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Chengdu, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">1</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/SnowWhite5" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/SnowWhite5"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Email" href="mailto:qmChen5@gmail.com"><i class="fa fa-envelope"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-07-15T06:35:15.000Z">2023-07-15</time></p><p class="title"><a href="/2023/07/15/data-analysis3/">用MySQL ＆ Power BI 进行数据分析</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-06-10T05:48:18.000Z">2023-06-10</time></p><p class="title"><a href="/2023/06/10/data-analysis2/">用python进行数据分析——实战篇</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-05-13T12:13:51.000Z">2023-05-13</time></p><p class="title"><a href="/2023/05/13/data-analysis-1/">用python进行数据分析——基础篇</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/"><span class="level-start"><span class="level-item">2023</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="tag">数据分析</span><span class="tag">3</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="SnowWhite&#039;s blog" height="28"></a><p class="is-size-7"><span>&copy; 2024 SnowWhite</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客, <span id="busuanzi_value_site_pv">0</span>次访问</span></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Github" href="https://github.com/SnowWhite5"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

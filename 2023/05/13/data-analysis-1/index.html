@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>用python进行数据分析——基础篇 - SnowWhite&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="SnowWhite"><meta name="msapplication-TileImage" content="img/logo.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SnowWhite"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="数据分析常常可通过MySQL、python、excel、BI(Business Intelligence)工具等工具进行分析。今天，我们学习用python进行数据分析，我将分为基础篇和实战篇进行讲解。 一.Numpy Numpy是python开源的科学计算工具包，定义了ndarray的n维数组对象及其运算，能进行线性代数的复杂运算。下文将numpy简写为np。"><meta property="og:type" content="blog"><meta property="og:title" content="SnowWhite"><meta property="og:url" content="https://github.com/SnowWhite5"><meta property="og:site_name" content="SnowWhite"><meta property="og:description" content="数据分析常常可通过MySQL、python、excel、BI(Business Intelligence)工具等工具进行分析。今天，我们学习用python进行数据分析，我将分为基础篇和实战篇进行讲解。 一.Numpy Numpy是python开源的科学计算工具包，定义了ndarray的n维数组对象及其运算，能进行线性代数的复杂运算。下文将numpy简写为np。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://github.com/img/logo.png"><meta property="article:published_time" content="2023-05-13T12:13:51.000Z"><meta property="article:modified_time" content="2024-03-04T14:39:48.522Z"><meta property="article:author" content="SnowWhite"><meta property="article:tag" content="数据分析"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://github.com/img/logo.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://snowwhite5.github.io/2023/05/13/data-analysis-1/"},"headline":"用python进行数据分析——基础篇","image":["https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304202851818.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304203150320.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304203424096.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304204750436.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304204919269.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304205234399.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304205323664.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304205414644.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304205447174.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304205518453.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304212311601.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304212330725.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304212338651.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304213017908.png","https://snowwhite5.github.io/2023/05/13/data-analysis-1/image-20240304213028737.png"],"datePublished":"2023-05-13T12:13:51.000Z","dateModified":"2024-03-04T14:39:48.522Z","author":{"@type":"Person","name":"SnowWhite"},"publisher":{"@type":"Organization","name":"SnowWhite's blog","logo":{"@type":"ImageObject","url":"https://snowwhite5.github.io/2023/05/13/data-analysis-1/img/logo.png"}},"description":"数据分析常常可通过MySQL、python、excel、BI(Business\r Intelligence)工具等工具进行分析。今天，我们学习用python进行数据分析，我将分为基础篇和实战篇进行讲解。\r 一.Numpy\r Numpy是python开源的科学计算工具包，定义了ndarray的n维数组对象及其运算，能进行线性代数的复杂运算。下文将numpy简写为np。"}</script><link rel="canonical" href="https://snowwhite5.github.io/2023/05/13/data-analysis-1/"><link rel="alternate" href="/atom.xml" title="SnowWhite&#039;s blog" type="application/atom+xml"><link rel="icon" href="/img/logo.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="SnowWhite&#039;s blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-9-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-05-13T12:13:51.000Z" title="2023/5/13 20:13:51">2023-05-13</time>发表</span><span class="level-item">19 分钟读完 (大约2894个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile"> 用python进行数据分析——基础篇</h1><div class="copyright article-block type-2"><p>版权申明：本文为原创文章，转载请注明原文出处</p><p>原文链接：<a href="https://snowwhite5.github.io/2023/05/13/data-analysis-1/" target="_blank">https://snowwhite5.github.io/2023/05/13/data-analysis-1/</a></p></div><div class="content"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>数据分析常常可通过MySQL、python、excel、BI(Business
+Intelligence)工具等工具进行分析。今天，我们学习用python进行数据分析，我将分为基础篇和实战篇进行讲解。</p>
+<h2 id="一.numpy">一.Numpy</h2>
+<p>Numpy是python开源的科学计算工具包，定义了ndarray的n维数组对象及其运算，能进行线性代数的复杂运算。下文将numpy简写为np。</p>
+<span id="more"></span>
+<h3 id="对象定义">1.对象定义</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">np.array(A)  <span class="comment">#将A转为ndArray对象，A可为列表、元祖、数组、生成器等。</span></span><br><span class="line">np.arange(low,high,C) <span class="comment">#生成范围是[low,high)，步长为C的等差数列。其中A省略时，默认为0；C省略时，默</span></span><br><span class="line"><span class="comment">#认为1。</span></span><br><span class="line">np.linspace(low,high,C) <span class="comment">#生成范围是[low,high]，数量为C的等差数列。若需要不包含区间右边的值，只需再</span></span><br><span class="line"><span class="comment">#显示设置endpoint值为False。</span></span><br></pre></td></tr></table></figure>
+<img src="/2023/05/13/data-analysis-1/image-20240304202851818.png" class="" title="image-20240304202851818">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">np.random.randint(low,high,size=(A,B,...),dtype=<span class="built_in">int</span>) <span class="comment">#生成随机整数，范围是[low,high)，尺寸是</span></span><br><span class="line"><span class="comment">#(A,B,...)，比如(2,3)表示2行3列.dtype可设置为不同的整型，默认int。</span></span><br><span class="line">np.random.rand(A,B,...) <span class="comment">#生成范围为[0,1),尺寸为(A,B,...)的浮点型数列。尺寸也可省略，此时仅生成一个</span></span><br><span class="line"><span class="comment">#浮点数。</span></span><br><span class="line">np.zeros((A,B,...),dtype = A)  <span class="comment">#生成全为0的数组，参数1是数组尺寸，参数2是数据类型，类似于word打字</span></span><br><span class="line"><span class="comment">#前设置格式。类似函数还有np.ones()，生成全为1的数组，np.eye()，生成主对角线为1的数组，类似于单位矩阵。</span></span><br></pre></td></tr></table></figure>
+<h3 id="对象属性">2.对象属性</h3>
+<p>假设已定义ndarray对象arr。</p>
+<ul>
+<li><p>arr.shape，返回arr对象的尺寸，即(A,B,...)。</p></li>
+<li><p>arr.size，返回arr对象中总数据量，即A<em>B</em>...。</p></li>
+<li><p>arr.ndim，返回arr对象的维度，例如arr的尺寸是(A,B,C,D)，则其维度为4。</p></li>
+<li><p>arr.dtype，返回arr对象中数值的类型，如int,float。需与type(arr)区分，后者返回arr的类型，即np.ndarray。</p>
+<img src="/2023/05/13/data-analysis-1/image-20240304203150320.png" class="" title="image-20240304203150320"></li>
+</ul>
+<h3 id="对象方法">3.对象方法</h3>
+<p>假设已定义ndarray对象arr。对象方法有两种调用方法，一种是“.”调用，一种是np.xxx()调用，如arr.sum()和np.sum(arr)。</p>
+<ol type="1">
+<li>arr.T，返回arr对象的转置。</li>
+<li>arr.reshape(A,B,...)，按尺寸为(A,B,...)重塑arr对象，但需注意，新尺寸需不改变对象总数据量。需与np.resize(arr,(A,B,...))区分，resize并不要求数据数量保持一致。</li>
+</ol>
+<img src="/2023/05/13/data-analysis-1/image-20240304203424096.png" class="" title="image-20240304203424096">
+<ol start="3" type="1">
+<li>arr.sum()，求取arr对象中所有数据总和。</li>
+<li>arr.mean()，求取arr对象中所有数据平均值。</li>
+<li>arr.max()，求取arr对象中所有数据最大值。</li>
+<li>arr.min()，求取arr对象中所有数据最小值。</li>
+<li>arr.std()，求取arr对象中所有数据标准差。</li>
+<li>arr.var()，求取arr对象中所有数据方差。</li>
+</ol>
+<p>另，3-8还可设置axis参数，指定运算仅在某一维上进行。</p>
+<h2 id="二.pandas">二.Pandas</h2>
+<p>数据分析中，Pandas中常用的数据对象为Series和DataFrame。接下来将分别进行学习。下文将Pandas简写为pd。</p>
+<h3 id="series一维数组">Series——一维数组</h3>
+<h4 id="对象定义-1">1.对象定义</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.Series(A,index=B)  <span class="comment">#将A转为Series对象。</span></span><br></pre></td></tr></table></figure>
+<p>其中，</p>
+<ul>
+<li>A可以是一维列表、元组、ndarray数组，B是定义索引index的字符串列表，可省略；</li>
+<li>A也可以是字典，此时字典的key为索引，value为Series的值；</li>
+<li>A还可以为标量，按index大小填充。</li>
+</ul>
+<h4 id="对象属性-1">2.对象属性</h4>
+<p>numpy有的属性，Series也有，除此之外，还可单独获取或设置index。</p>
+<h4 id="对象方法-1">3.对象方法</h4>
+<p>numpy有的属性，Series也有，除此之外，另有以下方法（假设定义了SerieS对象df）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df.head(n)  <span class="comment">#返回df中前n行</span></span><br><span class="line">df.tail(n)  <span class="comment">#返回df中后n行</span></span><br><span class="line">df.isnull() <span class="comment">#判断每个值是否为null，并返回对应的布尔序列</span></span><br><span class="line">df.shift(n) <span class="comment">#数值平移n个数，n为正数表示向下平移，负数表示向上平移，索引对应的空行填充np.NaN。</span></span><br></pre></td></tr></table></figure>
+<img src="/2023/05/13/data-analysis-1/image-20240304204750436.png" class="" title="image-20240304204750436">
+<h3 id="dataframe二维数组表格">DataFrame——二维数组（表格）</h3>
+<h4 id="对象定义-2">1.对象定义</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Pd.DataFrame(A, index=B)  <span class="comment">#将A转为DataFrame对象，类似于Series，区别在于此处的A为二维的。而index</span></span><br><span class="line"><span class="comment">#仍作为给行取索引。</span></span><br></pre></td></tr></table></figure>
+<img src="/2023/05/13/data-analysis-1/image-20240304204919269.png" class="" title="image-20240304204919269">
+<h4 id="对象属性和方法">2.对象属性和方法</h4>
+<p>类似于Series，特殊属性或方法于实战篇补充。</p>
+<h4 id="索引和切片">3.索引和切片</h4>
+<p>由于DataFrame结构的特殊性，其索引和切片不同于列表等常见结构，因此需单独学习。假设定义了DataFrame对象df。</p>
+<ul>
+<li><p>按列索引。此时和列表索引一样，用中括号进行索引，得到一个Series对象；如列名为字符串，也可作为属性进行列索引。也可多列索引，嵌套两层中括号进行索引。</p>
+<img src="/2023/05/13/data-analysis-1/image-20240304205234399.png" class="" title="image-20240304205234399"></li>
+<li><p>按行索引。由于行可用index进行定义，因此分为显式索引和隐式索引。</p>
+<p>df.loc[...]是显式索引，用index定义值进行索引。</p>
+<p>df.iloc[...]是隐式索引，用0,1,2...进行索引。</p>
+<p>也可多行索引，同样为嵌套两层中括号。</p>
+<img src="/2023/05/13/data-analysis-1/image-20240304205323664.png" class="" title="image-20240304205323664"></li>
+<li><p>按行和列索引单值。有两种方法：将其看作字典，先取某一列Series再取行，如df[‘a’][0]；或是将其看作二维数组，用loc或iloc进行取值，如df.iloc[0,0]</p>
+<img src="/2023/05/13/data-analysis-1/image-20240304205414644.png" class="" title="image-20240304205414644"></li>
+<li><p>按列切片。即行全取，列切片，用loc进行切片。</p>
+<img src="/2023/05/13/data-analysis-1/image-20240304205447174.png" class="" title="image-20240304205447174"></li>
+<li><p>按行切片。用loc或iloc进行切片，如df.iloc[0:2]。</p>
+<img src="/2023/05/13/data-analysis-1/image-20240304205518453.png" class="" title="image-20240304205518453"></li>
+</ul>
+<h2 id="三.对空值进行过滤或填充">三.对空值进行过滤或填充</h2>
+<h3 id="none-与-nan的区别">1.None 与 NaN的区别</h3>
+<ul>
+<li>None是None对象类型，而NaN是numpy下的，float类型</li>
+<li>为什么数据分析中空值为NaN？</li>
+</ul>
+<p>因为NaN可以参与运算，得到的值仍为NaN；而none不可以参与运算。数据分析中常需要各种运算，NaN不会干扰或中断运算。</p>
+<p>在pandas中如果遇到None形式的空值，则会将其转为NaN。</p>
+<h3 id="对空值进行过滤">2.对空值进行过滤</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.找到有空值的行</span></span><br><span class="line">s1 = df.isnull().<span class="built_in">any</span>(axis = <span class="number">1</span>)</span><br><span class="line"><span class="comment">#2.获取行索引</span></span><br><span class="line">s2 = df.loc[s1].index</span><br><span class="line"><span class="comment">#3.删除</span></span><br><span class="line">df.drop(labels = s2, axis = <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="对空值进行填充">3.对空值进行填充</h3>
+<p>此处可用fillna()方法进行实现。主要分为三种方式：</p>
+<ul>
+<li><p>将某值替换所有空值</p>
+<p>df.fillna(value = x)</p></li>
+<li><p>用已有值覆盖填充所有空值</p>
+<p>df.fillna(method = ‘ffill’, axis = 0)</p>
+<p>其中，Method定义覆盖方法，ffill表示向前覆盖，index大的覆盖index小的;bfill表示向后覆盖。axis表示行或列上操作，0表示列，1表示行。</p></li>
+<li><p>指定空值位置进行替换</p>
+<p>利用df.loc[x,y]可索引具体某处，对其进行替换覆盖。</p>
+<p>如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df2.loc[df2[<span class="string">&#x27;attended_exams&#x27;</span>].isnull(), <span class="string">&#x27;attended_exams&#x27;</span>] = <span class="number">0</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="四.重复数据处理">四.重复数据处理</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop_duplicate(subset = xxx, keep = xxx, inplace = xxx)</span><br></pre></td></tr></table></figure>
+<p>其中，subset用来设置删除的列特征。keep参数可设置为：’first’保留重复的第一行，’last’保留重复的最后一行,False为默认值，表示都删除。inplace表示是否在原数据上保留操作，True表示保留，False为默认值，表示不保留。</p>
+<h2 id="五.处理异常数据">五.处理异常数据</h2>
+<p>处理异常数据，一般分为三个步骤：</p>
+<ul>
+<li><p>找到判定条件</p></li>
+<li><p>得到bool序列</p></li>
+<li><p>对异常数据进行操作</p></li>
+</ul>
+<h2 id="六.其他高级操作">六.其他高级操作</h2>
+<h3 id="concat">1.concat</h3>
+<p>矩阵拼接的函数。主要参数有：</p>
+<ul>
+<li>objs，Series，DataFrame或Panel对象的序列或映射。</li>
+<li>axis，默认为0。</li>
+<li>join，{'inner'，'outer'}，默认为“outer”。如何处理其他轴上的索引。outer为联合和inner为交集。</li>
+</ul>
+<img src="/2023/05/13/data-analysis-1/image-20240304212311601.png" class="" title="image-20240304212311601">
+<img src="/2023/05/13/data-analysis-1/image-20240304212330725.png" class="" title="image-20240304212330725">
+<img src="/2023/05/13/data-analysis-1/image-20240304212338651.png" class="" title="image-20240304212338651">
+<h3 id="merge">2.merge</h3>
+<p>数据合并，类似于MySQL的连接操作。主要参数有：</p>
+<ul>
+<li><p>objs。合并对象，可用pd.merge传入需合并的对象，也可作为方法进行操作，如df.merge(df2,...)</p></li>
+<li><p>on。连接条件，即需保持相等的列，可为多个，用列表传入。当连接条件的列在两表中不同时，也可用left_on，right_on分别指示。</p></li>
+<li><p>how。连接方式，分为left、right、inner、outer、cross。与MySQL中定义类似。</p></li>
+</ul>
+<h3 id="qurey">3.qurey</h3>
+<p>用于查找，返回与原数据的类型一致。传入为查找语句或条件，整个条件用单引号括起来。多个条件用&amp;连接。列名无需加引号，值若为STR，需加双引号。</p>
+<h3 id="sort_values">4.sort_values</h3>
+<p>用于排序的方法。主要参数有：</p>
+<ul>
+<li><p>by。依据什么进行排序，传入为单个列名或行索引，也可以为列名列表。</p></li>
+<li><p>axis。在横向或竖直方向上排序。</p></li>
+<li><p>inplace。是否应用回原对象，默认为False，不应用。</p></li>
+<li><p>na_positon。{‘first’,’last’}。设置缺失值的位置。</p></li>
+<li><p>ascending。默认为True，升序排列。</p></li>
+</ul>
+<h3 id="value_counts">5.value_counts</h3>
+<p>统计某一列中不同值的个数，为Series的方法。如df[‘aaa’].value_counts()</p>
+<h3 id="rename">6.rename</h3>
+<p>修改列名称的方法。主要参数为：</p>
+<ul>
+<li><p>columns。传入值为字典类型，key值为原列名，value值为新列名。</p></li>
+<li><p>inplace。是否将修改应用回原数据。默认为False。</p></li>
+</ul>
+<h3 id="reset_index">7.reset_index</h3>
+<p>重置索引的方法。数据清洗时，会将带空值的行删除，此时DataFrame或Series类型的数据不再是连续的索引，可以使用reset_index()重置索引。</p>
+<h3 id="replace">8.replace</h3>
+<p>替换的方法。除inplace外，还有to_place和value，regex参数，分别表示替换后的值，替换前的值，是否用正则。一般有3种用法：</p>
+<ul>
+<li>全表中替换某值</li>
+</ul>
+<p>可将替换前后的值分别传给to_place和value，可为单个也可为多个，也可用字典表示，key值为原值，value为新值，均赋值给to_place。</p>
+<ul>
+<li>某一列中进行替换</li>
+</ul>
+<p>针对某一列进行replace方法运算，即df[...].replace(...)。</p>
+<ul>
+<li>使用正则</li>
+</ul>
+<p>若需用正则，可将regex设为True。用正则表达式表示需替换的值。且可针对全表或某列。</p>
+<h3 id="map">9.map</h3>
+<p>映射的方法。传入字典后，将某一列值按照字典关系进行映射，映射后的结果与映射前进行绑定，常与groupby一起操作。</p>
+<p>也可用transform或apply传入自定义映射函数进行映射。区别在于，transform与map一样，输出已将结果前后进行绑定，而apply并未进行绑定，还需手动将其映射。</p>
+<h3 id="groupby">10.groupby</h3>
+<p>分组的方法，主要参数为by，分组依据的列。分组后，可针对某一列进行运算，如sum,count,mean。</p>
+<p>输出索引非连续，若需要DataFrame类数据，还需reset_index操作。</p>
+<img src="/2023/05/13/data-analysis-1/image-20240304213017908.png" class="" title="image-20240304213017908">
+<img src="/2023/05/13/data-analysis-1/image-20240304213028737.png" class="" title="image-20240304213028737">
+</div><div class="article-licensing box"><div class="licensing-title"><p>用python进行数据分析——基础篇</p><p><a href="https://snowwhite5.github.io/2023/05/13/data-analysis-1/">https://snowwhite5.github.io/2023/05/13/data-analysis-1/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>SnowWhite</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-05-13</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-03-04</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></div><!--!--></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/img/alipay.JPG" alt="支付宝"></span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/img/wechat.JPG" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/06/10/data-analysis2/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">用python进行数据分析——实战篇</span></a></div></nav><span class="level-item copyright article-title type-2">原创</span><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="content" id="valine-thread"></div><script src="//cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@1.4.16/dist/Valine.min.js"></script><script>new Valine({
+            el: '#valine-thread',
+            appId: "YC4mJ8MHaxOBVFTo1GRr5yDB-gzGzoHsz",
+            appKey: "M7OHMMjYi9awKK0BH7JdzICx",
+            placeholder: "欢迎探讨评论......",
+            avatar: "mm",
+            avatarForce: false,
+            meta: ["nick","mail","link"],
+            pageSize: 10,
+            lang: "zh-CN",
+            visitor: false,
+            highlight: true,
+            recordIP: false,
+            
+            
+            
+            enableQQ: false,
+            requiredFields: [],
+        });</script></div></div></div><div class="column column-left is-4-tablet is-3-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/logo.png" alt="SnowWhite"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">SnowWhite</p><p class="is-size-6 is-block">preparing for opportunities</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Chengdu, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">1</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/SnowWhite5" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/SnowWhite5"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Email" href="mailto:qmChen5@gmail.com"><i class="fa fa-envelope"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-07-15T06:35:15.000Z">2023-07-15</time></p><p class="title"><a href="/2023/07/15/data-analysis3/">用MySQL ＆ Power BI 进行数据分析</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-06-10T05:48:18.000Z">2023-06-10</time></p><p class="title"><a href="/2023/06/10/data-analysis2/">用python进行数据分析——实战篇</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-05-13T12:13:51.000Z">2023-05-13</time></p><p class="title"><a href="/2023/05/13/data-analysis-1/">用python进行数据分析——基础篇</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/"><span class="level-start"><span class="level-item">2023</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="tag">数据分析</span><span class="tag">3</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="SnowWhite&#039;s blog" height="28"></a><p class="is-size-7"><span>&copy; 2024 SnowWhite</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客, <span id="busuanzi_value_site_pv">0</span>次访问</span></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Github" href="https://github.com/SnowWhite5"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

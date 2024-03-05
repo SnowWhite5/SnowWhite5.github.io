@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>用MySQL ＆ Power BI 进行数据分析 - SnowWhite&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="SnowWhite"><meta name="msapplication-TileImage" content="img/logo.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SnowWhite"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="除了表格数据，数据分析也常用到可视化工具进行分析和汇报，如Power BI, tableau等。今天，我们将结合MySQL和Power BI进行数据分析并制作简报。 一.数据源 该项目来源于Youtube视频，数据源为作者提供的数据，是某公司从200年到2020年来22000名员工的数据，地址是https:&amp;#x2F;&amp;#x2F;github.com&amp;#x2F;Irene-arch&amp;#x2F;HR-Dashboard-MySQL-"><meta property="og:type" content="blog"><meta property="og:title" content="SnowWhite"><meta property="og:url" content="https://github.com/SnowWhite5"><meta property="og:site_name" content="SnowWhite"><meta property="og:description" content="除了表格数据，数据分析也常用到可视化工具进行分析和汇报，如Power BI, tableau等。今天，我们将结合MySQL和Power BI进行数据分析并制作简报。 一.数据源 该项目来源于Youtube视频，数据源为作者提供的数据，是某公司从200年到2020年来22000名员工的数据，地址是https:&amp;#x2F;&amp;#x2F;github.com&amp;#x2F;Irene-arch&amp;#x2F;HR-Dashboard-MySQL-"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://github.com/img/logo.png"><meta property="article:published_time" content="2023-07-15T06:35:15.000Z"><meta property="article:modified_time" content="2024-03-05T07:39:50.601Z"><meta property="article:author" content="SnowWhite"><meta property="article:tag" content="数据分析"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://github.com/img/logo.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://snowwhite5.github.io/2023/07/15/data-analysis3/"},"headline":"用MySQL ＆ Power BI 进行数据分析","image":["https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305144703985.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305145842195.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305150517268.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305150623152.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152133629.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152311826.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152328341.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152352959.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152408414.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152414554.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152429849.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152506116.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152529286.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152616797.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152629205.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152735850.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152746631.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152944544.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305152955609.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305153106851.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305153118846.png","https://snowwhite5.github.io/2023/07/15/data-analysis3/image-20240305153131635.png"],"datePublished":"2023-07-15T06:35:15.000Z","dateModified":"2024-03-05T07:39:50.601Z","author":{"@type":"Person","name":"SnowWhite"},"publisher":{"@type":"Organization","name":"SnowWhite's blog","logo":{"@type":"ImageObject","url":"https://snowwhite5.github.io/2023/07/15/data-analysis3/img/logo.png"}},"description":"除了表格数据，数据分析也常用到可视化工具进行分析和汇报，如Power BI,\r tableau等。今天，我们将结合MySQL和Power BI进行数据分析并制作简报。\r 一.数据源\r 该项目来源于Youtube视频，数据源为作者提供的数据，是某公司从200年到2020年来22000名员工的数据，地址是https:&#x2F;&#x2F;github.com&#x2F;Irene-arch&#x2F;HR-Dashboard-MySQL-"}</script><link rel="canonical" href="https://snowwhite5.github.io/2023/07/15/data-analysis3/"><link rel="alternate" href="/atom.xml" title="SnowWhite&#039;s blog" type="application/atom+xml"><link rel="icon" href="/img/logo.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.png" alt="SnowWhite&#039;s blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-9-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-07-15T06:35:15.000Z" title="2023/7/15 14:35:15">2023-07-15</time>发表</span><span class="level-item">18 分钟读完 (大约2726个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile"> 用MySQL ＆ Power BI 进行数据分析</h1><div class="copyright article-block type-2"><p>版权申明：本文为原创文章，转载请注明原文出处</p><p>原文链接：<a href="https://snowwhite5.github.io/2023/07/15/data-analysis3/" target="_blank">https://snowwhite5.github.io/2023/07/15/data-analysis3/</a></p></div><div class="content"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>除了表格数据，数据分析也常用到可视化工具进行分析和汇报，如Power BI,
+tableau等。今天，我们将结合MySQL和Power BI进行数据分析并制作简报。</p>
+<h2 id="一.数据源">一.数据源</h2>
+<p>该项目来源于Youtube视频，数据源为作者提供的数据，是某公司从200年到2020年来22000名员工的数据，地址是<a
+target="_blank" rel="noopener" href="https://github.com/Irene-arch/HR-Dashboard-MySQL-PowerBI">https://github.com/Irene-arch/HR-Dashboard-MySQL-PowerBI</a>。具体如下图。</p>
+<span id="more"></span>
+<img src="/2023/07/15/data-analysis3/image-20240305144703985.png" class="" title="image-20240305144703985">
+<h2 id="二.用mysql进行数据清洗和分析">二.用MySQL进行数据清洗和分析</h2>
+<p>本项目使用MySQL自带的客户端，使用前，需安装MySQL服务器和客户端，启动服务器并连接。</p>
+<h3 id="创建并使用数据库">1.创建并使用数据库</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE projects;</span><br><span class="line">USE projects;</span><br></pre></td></tr></table></figure>
+<h3 id="导入数据并将该表命名为hr">2.导入数据并将该表命名为hr</h3>
+<p>下拉刚创建的数据库，右键Tables，选择table data import
+wizard，并选中需导入的表格。注意！该客户端导入时可完成utf-8编码操作，若使用的客户端无此操作，需用office自行编码后另存为。</p>
+<h3 id="查看数据">3.查看数据</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM projects.hr;</span><br></pre></td></tr></table></figure>
+<img src="/2023/07/15/data-analysis3/image-20240305145842195.png" class="" title="image-20240305145842195">
+<p>可见，该表存在许多需要数据清理的地方，如第一列的列名为乱码，日期格式不统一。</p>
+<h3 id="数据清洗">4.数据清洗</h3>
+<ul>
+<li>修改列名</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table hr</span><br><span class="line">CHANGE COLUMN 锘縤d emp_id VARCHAR(20) NULL;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>统一日期格式</li>
+</ul>
+<p>由上图可知，birthdate，hiredate和termdate均为日期，我们先处理前两列。birthdate和hiredate格式有两种，一种是以“/”隔开，一种是以“-”隔开，因此，这里需用到case进行设置，分别将string格式化后再统一。</p>
+<p>在此之前，若需要update和where可联合使用，需打开MySQL的安全模式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set sql_safe_updates = 0;</span><br></pre></td></tr></table></figure>
+<p>再进行更新操作。结果如下图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">update hr</span><br><span class="line">set hire_date = case</span><br><span class="line">when hire_date like &#x27;%/%&#x27; then date_format(str_to_date(hire_date,&#x27;%m/%d/%Y&#x27;),&#x27;%Y-%m-%d&#x27;)</span><br><span class="line">when hire_date like &#x27;%-%&#x27; then date_format(str_to_date(hire_date,&#x27;%m-%d-%Y&#x27;),&#x27;%Y-%m-%d&#x27;)</span><br><span class="line">else NULL</span><br><span class="line">end;</span><br></pre></td></tr></table></figure>
+<img src="/2023/07/15/data-analysis3/image-20240305150517268.png" class="" title="image-20240305150517268">
+<p>最后再将其设为date格式。birthdate也是同样的操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE hr</span><br><span class="line">MODIFY COLUMN hire_date DATE;</span><br></pre></td></tr></table></figure>
+<p>再针对termdate进行操作。先查看其数据，如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305150623152.png" class="" title="image-20240305150623152">
+<p>可见其格式统一，只需为空行添加数据及修改数据类型为date。为方便后期数据分析，将分别对有数据和无数据进行操作。</p>
+<p>针对有数据的情况，将数据转为date型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update hr</span><br><span class="line">set termdate = date(str_to_date(termdate,&#x27;%Y-%m-%d %H:%i:%s UTC&#x27;))</span><br><span class="line">where termdate is not null and termdate != &#x27;&#x27;;</span><br></pre></td></tr></table></figure>
+<p>针对无数据或日期超过当前日期的异常数据的情况，将其统一为0000-00-00。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update hr </span><br><span class="line">set termdate = &#x27;0000-00-00&#x27;</span><br><span class="line">where termdate is null or termdate = &#x27;&#x27; or termdate &gt; curdate();</span><br></pre></td></tr></table></figure>
+<p>最后设置其格式为date。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table hr</span><br><span class="line">modify column termdate date;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加age列，将年龄设置为当前时间减去出生日期，并取年。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alter table hr </span><br><span class="line">add column age int;</span><br><span class="line">update hr </span><br><span class="line">set age = timestampdiff(YEAR,birthdate,curdate());</span><br></pre></td></tr></table></figure>
+<h2 id="三.用mysql进行数据分析">三.用MySQL进行数据分析</h2>
+<h3 id="公司里员工的性别划分是什么">1.公司里员工的性别划分是什么？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select gender, count(*) count</span><br><span class="line">from hr</span><br><span class="line">where age &gt;= 18 and termdate = date(‘0000-00-00’) </span><br><span class="line">group by gender;</span><br></pre></td></tr></table></figure>
+<p>注：age大于等于18为真实员工，termdate为0000-00-00表示在职。</p>
+<h3
+id="公司中员工的种族民族划分是什么">2.公司中员工的种族/民族划分是什么？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select race,count(*) count</span><br><span class="line">from hr</span><br><span class="line">where age &gt;=18 and termdate =date(&#x27;00000-00-00&#x27;)</span><br><span class="line">group by race</span><br><span class="line">order by count desc;</span><br></pre></td></tr></table></figure>
+<h3
+id="公司内员工的年龄和性别分布如何">3.公司内员工的年龄和性别分布如何？</h3>
+<p>假设以10年为一个区间，则</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">select </span><br><span class="line">case</span><br><span class="line">when age &gt;= 18 and age&lt;=24 then &#x27;18-24&#x27;</span><br><span class="line">when age &gt;= 25 and age &lt;=34 then &#x27;25-34&#x27;</span><br><span class="line">when age &gt;= 35 and age &lt;=44 then &#x27;35-44&#x27;</span><br><span class="line">when age &gt;= 45 and age &lt;=54 then &#x27;45-54&#x27;</span><br><span class="line">when age &gt;= 55 and age &lt;=64 then &#x27;55-64&#x27;</span><br><span class="line">else &#x27;65+&#x27;</span><br><span class="line">end as age_group, gender, count(*) count</span><br><span class="line">from hr</span><br><span class="line">where age &gt;=18 and termdate =date(&#x27;00000-00-00&#x27;)</span><br><span class="line">group by age_group,gender</span><br><span class="line">order by age_group, gender;</span><br></pre></td></tr></table></figure>
+<h3
+id="有多少员工在总部工作而不是在偏远地区工作">4.有多少员工在总部工作，而不是在偏远地区工作？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select location, count(*) as count</span><br><span class="line">from hr</span><br><span class="line">where age &gt;=18 and termdate =date(&#x27;00000-00-00&#x27;)</span><br><span class="line">group by location</span><br><span class="line">order by location;</span><br></pre></td></tr></table></figure>
+<h3
+id="已被解雇的员工的平均雇佣年限是多少">5.已被解雇的员工的平均雇佣年限是多少？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select round(avg(datediff(termmdate, hire_date)/365), 2) avg_length_employment</span><br><span class="line">from hr</span><br><span class="line">where termdate &lt;&gt; date(‘0000-00-00’) and age &gt;= 18</span><br></pre></td></tr></table></figure>
+<h3
+id="不同部门和不同职位之间的性别分布有何不同">6.不同部门和不同职位之间的性别分布有何不同？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select department,jobtitle,gender,count(*) count</span><br><span class="line">from hr</span><br><span class="line">where age &gt;=18 and termdate =date(&#x27;00000-00-00&#x27;)</span><br><span class="line">group by department,jobtitle,gender</span><br><span class="line">order by department,jobtitle;</span><br></pre></td></tr></table></figure>
+<h3 id="整个公司的职位分配情况如何">7.整个公司的职位分配情况如何？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select jobtitle,count(*) count </span><br><span class="line">from hr</span><br><span class="line">where age &gt;=18 and termdate =date(&#x27;00000-00-00&#x27;)</span><br><span class="line">group by jobtitle</span><br><span class="line">order by jobtitle desc;</span><br></pre></td></tr></table></figure>
+<h3 id="哪个部门的人员流动率最高">8.哪个部门的人员流动率最高？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">select department,total_count,terminated_count,</span><br><span class="line"> terminated_count/total_count as terminated_rate</span><br><span class="line"> from (</span><br><span class="line"> select department,</span><br><span class="line"> count(*) as total_count,</span><br><span class="line"> sum(</span><br><span class="line"> case</span><br><span class="line"> when termdate &lt;&gt;date(&#x27;00000-00-00&#x27;) and termdate &lt;=curdate() then 1</span><br><span class="line"> else 0</span><br><span class="line"> end</span><br><span class="line"> ) as terminated_count</span><br><span class="line"> from hr</span><br><span class="line"> where age &gt;= 18</span><br><span class="line"> group by department</span><br><span class="line"> )  as A</span><br><span class="line"> order by terminated_rate desc;</span><br></pre></td></tr></table></figure>
+<p>该项需求比前几项要复杂一些。首先确认人员流动率的计算公式为离职人数/总人数，总人数即按部门分类后算count，辞职人数需进行sum运算，若已离职则计1，否则计0。得到两值后，再在外层嵌套一个select进行运算。</p>
+<h3
+id="不同城市和州的员工分布情况是多少">9.不同城市和州的员工分布情况是多少？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select location_state, count(*) as count</span><br><span class="line">from hr</span><br><span class="line">where age &gt;=18 and termdate =date(&#x27;00000-00-00&#x27;)</span><br><span class="line">group by location_state</span><br><span class="line">order by count desc;</span><br></pre></td></tr></table></figure>
+<h3
+id="公司的员工数量如何随hire_date和termdate而变化">10.公司的员工数量如何随hire_date和termdate而变化？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">select year,hires,termination,</span><br><span class="line">hires-termination as net_change,</span><br><span class="line">round((hires-termination)/hires*100, 2) as net_change_percent</span><br><span class="line">from (</span><br><span class="line">select Year(hire_date) as year,</span><br><span class="line">count(*) as hires,</span><br><span class="line">sum(case </span><br><span class="line">when termdate &lt;&gt;date(&#x27;00000-00-00&#x27;) and termdate &lt;=curdate() then 1 </span><br><span class="line">else 0 </span><br><span class="line">end) as termination</span><br><span class="line">from hr</span><br><span class="line">where age &gt;= 18</span><br><span class="line">group by year</span><br><span class="line">) as A</span><br><span class="line">order by year;</span><br></pre></td></tr></table></figure>
+<p>首先理解题目。题目的意思是计算同一年入职的人中有多少离职的，并按年份表现其变化。接着，确认需要获取哪些信息：雇佣年份，当年入职员工数量，当年员工数量变动率。而员工数量变化率的公式为(当年入职员工数量-已离职人数)/当年入职员工数量*100%。</p>
+<h3
+id="每个部门的任期分配情况是多少">11.每个部门的任期分配情况是多少？</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select department,round(avg(datediff(termdate,hire_date)/365),0) as avg_tenure</span><br><span class="line">from hr</span><br><span class="line">where termdate &lt;= curdate() and termdate &lt;&gt;date(&#x27;00000-00-00&#x27;) and age &gt;= 18</span><br><span class="line">group by department;</span><br></pre></td></tr></table></figure>
+<h2 id="四.用power-bi绘制可视化简报">四.用Power BI绘制可视化简报</h2>
+<p>根据MySQL得到的分析结果，用Power BI绘制可视化简报。如图为Power
+BI的初始页面。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152133629.png" class="" title="image-20240305152133629">
+<p>界面上方与office使用基本一致，绘图功能主要为右方区域，包括（堆积）条形图、（堆积）柱形图、饼图、地图等，堆积是一种叠加，是用来展示叠加之后，局部与整体的成分关系的。</p>
+<h3 id="插入标题">1.插入标题</h3>
+<p>点击上方插入中的文本框进行插入。与PPT的操作一样，我们可以通过拖动改变其大小，设定文本格式，输入文字。</p>
+<h3 id="显示平均雇佣年限">2.显示平均雇佣年限</h3>
+<p>点击上方主页中的插入数据，选中需要导入的表格并插入，如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152311826.png" class="" title="image-20240305152311826">
+<p>插入的数据将会出现在最右边。一个数据的话，我们将使用卡片图进行展示，点击可视化中的卡片图，再选中需显示的数据。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152328341.png" class="" title="image-20240305152328341">
+<p>而主界面上显示如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152352959.png" class="" title="image-20240305152352959">
+<p>我们可通过拖动主界面的文本框进行尺寸修改，也可通过右方可视化下的设置视觉对象格式进行修改，包括对象字体、颜色设定的视觉对象设定和设置标题、位置、尺寸的常规设定。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152408414.png" class="" title="image-20240305152408414">
+<img src="/2023/07/15/data-analysis3/image-20240305152414554.png" class="" title="image-20240305152414554">
+<p>此处，我们将视觉对象-类别标签关闭，在常规-标题设置自定义的标题为Average
+Length of
+Employment(Years)。再在视觉对象-标注值将对象数据颜色修改为蓝色。效果如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152429849.png" class="" title="image-20240305152429849">
+<h3 id="性别分布">3.性别分布</h3>
+<p>使用柱形图表示性别分布。导入数据，选中可视化的堆积柱形图，再选中需要显示的性别信息。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152506116.png" class="" title="image-20240305152506116">
+<p>对于数据的选择，也可用拖拽的方式，分别放在选择图形后，可视化下出现的x轴、y轴、图例等空格中。而x轴、y轴等显示设定，则在视觉对象下，包括对值是否显示、值的常规设置、轴标题以及类别间隔的设定等。</p>
+<p>此处，我们将y轴值隐藏，改为打开视觉对象-数据标签，即显示在每个类别的柱子上。再修改表标题、y轴标题，隐藏x轴标题。效果如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152529286.png" class="" title="image-20240305152529286">
+<h3 id="年龄和性别分布">4.年龄和性别分布</h3>
+<p>用簇型柱形图表示年龄和性别分布，x轴为年龄，y轴为count，图例为gender，如图。属性设置方式与以上雷同，不再赘述。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152616797.png" class="" title="image-20240305152616797">
+<p>该表还可用堆积柱形图表示，如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152629205.png" class="" title="image-20240305152629205">
+<h3 id="总部与分部的员工分布">5.总部与分部的员工分布</h3>
+<p>用环形图表示地区分布，如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152735850.png" class="" title="image-20240305152735850">
+<p>此处，我们将修改常规-标题、视觉对象-扇区-颜色、视觉对象-图例-大小。效果如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152746631.png" class="" title="image-20240305152746631">
+<h3 id="员工数量变化">6.员工数量变化</h3>
+<p>用折线图表示员工数量变化。如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152944544.png" class="" title="image-20240305152944544">
+<p>此处，我们将打开视觉对象-标记，即标出折线上的每一个点，之后进行常规操作。</p>
+<p>需注意，中文版将line翻译为行，该项可修改折线属性。修改后效果如下。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305152955609.png" class="" title="image-20240305152955609">
+<h3 id="地区分布">7.地区分布</h3>
+<p>用地图表示员工地区分布，将location_state设置到位置，count设置到气泡大小，如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305153106851.png" class="" title="image-20240305153106851">
+<p>在视觉对象中，可设置地图种类，气泡属性、类别标签等。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305153118846.png" class="" title="image-20240305153118846">
+<p>此处，我们将放大气泡大小、打开类别标签并设置为无底黑字，如图。</p>
+<img src="/2023/07/15/data-analysis3/image-20240305153131635.png" class="" title="image-20240305153131635">
+<h3 id="导出">8.导出</h3>
+<p>最后，简报制作完成后，可点击文件-导出，导出为pdf格式或BI模板。</p>
+<h2 id="四.小结">四.小结</h2>
+<p>该项目从MySQL清洗数据，分析数据到Power
+BI图表展示，更直观多样地从数据中获取信息。MySQL中常用操作包括group
+by，order by，较复杂些需要子查询，case，正则等操作。而Power
+BI中，一般按导入数据，选择可视化对象，设置对象参数，修改对象和文本框属性，导出的步骤进行操作。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>用MySQL ＆ Power BI 进行数据分析</p><p><a href="https://snowwhite5.github.io/2023/07/15/data-analysis3/">https://snowwhite5.github.io/2023/07/15/data-analysis3/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>SnowWhite</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-07-15</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-03-05</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></div><!--!--></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/img/alipay.JPG" alt="支付宝"></span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/img/wechat.JPG" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/06/10/data-analysis2/"><span class="level-item">用python进行数据分析——实战篇</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><span class="level-item copyright article-title type-2">原创</span><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="content" id="valine-thread"></div><script src="//cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@1.4.16/dist/Valine.min.js"></script><script>new Valine({
+            el: '#valine-thread',
+            appId: "YC4mJ8MHaxOBVFTo1GRr5yDB-gzGzoHsz",
+            appKey: "M7OHMMjYi9awKK0BH7JdzICx",
+            placeholder: "欢迎探讨评论......",
+            avatar: "mm",
+            avatarForce: false,
+            meta: ["nick","mail","link"],
+            pageSize: 10,
+            lang: "zh-CN",
+            visitor: false,
+            highlight: true,
+            recordIP: false,
+            
+            
+            
+            enableQQ: false,
+            requiredFields: [],
+        });</script></div></div></div><div class="column column-left is-4-tablet is-3-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/logo.png" alt="SnowWhite"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">SnowWhite</p><p class="is-size-6 is-block">preparing for opportunities</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Chengdu, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">1</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/SnowWhite5" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/SnowWhite5"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Email" href="mailto:qmChen5@gmail.com"><i class="fa fa-envelope"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-07-15T06:35:15.000Z">2023-07-15</time></p><p class="title"><a href="/2023/07/15/data-analysis3/">用MySQL ＆ Power BI 进行数据分析</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-06-10T05:48:18.000Z">2023-06-10</time></p><p class="title"><a href="/2023/06/10/data-analysis2/">用python进行数据分析——实战篇</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-05-13T12:13:51.000Z">2023-05-13</time></p><p class="title"><a href="/2023/05/13/data-analysis-1/">用python进行数据分析——基础篇</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/"><span class="level-start"><span class="level-item">2023</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="tag">数据分析</span><span class="tag">3</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.png" alt="SnowWhite&#039;s blog" height="28"></a><p class="is-size-7"><span>&copy; 2024 SnowWhite</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客, <span id="busuanzi_value_site_pv">0</span>次访问</span></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Github" href="https://github.com/SnowWhite5"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
